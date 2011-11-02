@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from redistricting.apps.features import views
+import views
 
 # urls coming after ^geom/
 urlpatterns = patterns('',

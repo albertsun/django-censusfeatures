@@ -9,7 +9,7 @@ from optparse import make_option
 from django.core.management.base import NoArgsCommand, CommandError
 from django.core import management
 
-from redistricting.apps.features.models import CensusBlock
+from censusfeatures.models import CensusBlock
 
 from django.conf import settings
 settings.DEBUG = False

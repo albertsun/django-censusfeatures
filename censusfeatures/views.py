@@ -1,5 +1,5 @@
-from redistricting.apps.features.models import CensusBlock, CensusTract, CensusCounty, DataBlock
-from redistricting.utils import gmerc
+from models import CensusBlock, CensusTract, CensusCounty, DataBlock
+from utils import gmerc
 
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.contrib.gis.geos import GEOSGeometry
@@ -123,6 +123,7 @@ def _output_geo_queryset(qs, jsonpcallback=""):
     else:
         out = json.dumps(geoms)
     
-    resp = HttpResponse(out, mimetype="application/json")
+    #resp = HttpResponse(out, mimetype="application/json")
+    resp = HttpResponse(out)
     resp['X-ALBERT'] = "=)"
     return resp
