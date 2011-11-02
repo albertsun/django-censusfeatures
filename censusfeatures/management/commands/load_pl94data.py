@@ -2,7 +2,7 @@ import os
 import csv
 
 from optparse import make_option
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.core import management
 
 #from redistricting.apps.features.models import DataBlock
@@ -11,14 +11,14 @@ from django.db import connection, transaction
 from django.conf import settings
 settings.DEBUG = False
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help="Import Fairplan 2020 aggregated PL94 block level census data"
-    option_list= NoArgsCommand.option_list + ()
-
-    def get_version(self):
-        return "0.1"
+    args = "<data_dir>"
     
-    def handle_noargs(self, **options):
+    def get_version(self):
+        return "0.2"
+    
+    def handle(self, *args, **options):
         """
         Assume files are located as below, and named like:
         ak_PL94_block2010.txt
@@ -36,13 +36,15 @@ class Command(NoArgsCommand):
         # SELECT COUNT(geoid10) FROM censusblocks;
         11078297 in postgresql
         """
+
+        datadir = args[0]
         
         cursor = connection.cursor()
         cursor.execute("""TRUNCATE TABLE datablocks""")
         transaction.commit_unless_managed()
         
-        for filename in os.listdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../redistrictingdata/fairplan2020data/"))):
-            filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../redistrictingdata/fairplan2020data/"+filename))
+        for filename in os.listdir(os.path.abspath(os.path.join(os.path.dirname(__file__), datadir+"/fairplan2020data/"))):
+            filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), datadir+"/fairplan2020data/"+filename))
             if ((filename[3:7] == 'PL94') and (filename[0:2] != 'pr')):
                 print "Attempting import of PL94 data in "+filepath
                 with open(filepath) as f:

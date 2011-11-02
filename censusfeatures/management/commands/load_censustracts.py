@@ -6,7 +6,7 @@ from django.contrib.gis.gdal import OGRException
 from django.db.utils import IntegrityError
 
 from optparse import make_option
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.core import management
 
 from censusfeatures.models import CensusTract
@@ -30,15 +30,17 @@ censustracts_mapping = {
     'the_geom' : 'MULTIPOLYGON',
 }
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help="Import shapefiles of 2010 Tiger Census Tracts"
-    option_list= NoArgsCommand.option_list + ()
+    args = "<data_dir>"
 
     def get_version(self):
-        return "0.1"
+        return "0.2"
     
-    def handle_noargs(self, **options):
+    def handle(self, *args, **options):
 
+        datadir = args[0]
+        
         # Need to do this 50 times, onece for the shapefile of each state
         for i in range(1,57):
             # files are named with zero padded FIPS codes
@@ -47,7 +49,7 @@ class Command(NoArgsCommand):
             else:
                 padded_i = str(i)
             
-            shpfile = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../redistrictingdata/state_tract_shapefiles/tl_2010_'+padded_i+'_tract10/tl_2010_'+padded_i+'_tract10.shp'))
+            shpfile = os.path.abspath(os.path.join(os.path.dirname(__file__), datadir+'/state_tract_shapefiles/tl_2010_'+padded_i+'_tract10/tl_2010_'+padded_i+'_tract10.shp'))
 
             print "Attempting import of shapefile "+shpfile
 

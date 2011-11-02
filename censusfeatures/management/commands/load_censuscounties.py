@@ -6,7 +6,7 @@ from django.contrib.gis.gdal import OGRException
 from django.db.utils import IntegrityError
 
 from optparse import make_option
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.core import management
 
 from censusfeatures.models import CensusCounty
@@ -35,15 +35,17 @@ censuscounty_mapping = {
     'the_geom' : 'MULTIPOLYGON',
 }
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help="Import shapefiles of 2010 Tiger Counties"
-    option_list= NoArgsCommand.option_list + ()
+    args = "<data_dir>"
 
     def get_version(self):
         return "0.1"
     
-    def handle_noargs(self, **options):
-        shpfile = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../redistrictingdata/us_county_shapefiles//tl_2010_us_county10.shp'))
+    def handle(self, *args, **options):
+
+        datadir = args[0]
+        shpfile = os.path.abspath(os.path.join(os.path.dirname(__file__), datadir+'/us_county_shapefiles//tl_2010_us_county10.shp'))
 
         print "Attempting import of shapefile "+shpfile
 
