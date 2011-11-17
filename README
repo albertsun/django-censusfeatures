@@ -1,12 +1,18 @@
 A Django app to serve up GeoJSON vector tiles of 2010 U.S. Census Blocks with P.L. 94 redistricting data.
 
-Run
+To load the data, grab a copy of it from here:
+
+http://wsjcmm.s3-website-us-east-1.amazonaws.com/
+
+You'll have to reassemble the chunks. The zipped file will be ~7.5gb, and the unzipped file ~20gb. Make sure you have enough room.
+
+To import, run these commands to set up the tables and then import the data. The import will take a while.
 ./manage.py syncdb
 ./manage.py load_all_data /path/to/redistrictingdata folder
 
-Data sources are ftp://ftp2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/ and ftp://ftp2.census.gov/geo/tiger/TIGER2010/TRACT/2010/ and ftp://ftp2.census.gov/geo/tiger/TIGER2010/COUNTY/2010/tl_2010_us_county10.zip and http://fairplan2020.fyels.com/
+Original data sources are ftp://ftp2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/ and ftp://ftp2.census.gov/geo/tiger/TIGER2010/TRACT/2010/ and ftp://ftp2.census.gov/geo/tiger/TIGER2010/COUNTY/2010/tl_2010_us_county10.zip and http://fairplan2020.fyels.com/
 
-Folder structure of redistrictingdata/ should be
+Folder structure of redistrictingdata/ should be like this before running the import
 
 redistrictingdata/
     fairplan2020data/
