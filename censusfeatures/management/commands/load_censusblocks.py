@@ -33,7 +33,7 @@ censusblocks_mapping = {
     'the_geom' : 'MULTIPOLYGON',
 }
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help="Import shapefiles of 2010 Tiger Census Blocks"
     args = "<data_dir>"
 
